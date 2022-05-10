@@ -29,10 +29,12 @@
 
     [ ] 직접 API 호출해서 볼 수 있는 API document
         * API 형식 예시
-        <pre><code># retrive(read)
-    curl https://api.clinicaltrialskorea.com/api/v1/studies/22162/
-    # search
-    curl https://api.clinicaltrialskorea.com/api/v1/studies/?condition=%EA%B0%84&offset=0&limit=10</code></pre>
+        <pre><code>
+        # retrive(read)
+        curl https://api.clinicaltrialskorea.com/api/v1/studies/22162/
+        # search
+        curl https://api.clinicaltrialskorea.com/api/v1/studies/?condition=%EA%B0%84&offset=0&limit=10
+        </code></pre>
 
 ## 가산점 조건
     [ ] 임상 시험 정보를 제공하는 다른 API 발굴해 batch task 추가
