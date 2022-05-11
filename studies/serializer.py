@@ -5,6 +5,6 @@ from studies.models import Study
 class StudySerializers(serializers.ModelSerializer):
     class Meta:
         model = Study
-        fields = ['number', 'title', 'period', 'stage', 'total_target', \
-            'institute', 'scope', 'category']
+        fields = ['title', 'number', 'period', 'scope', 'category', 'stage', \
+             'total_target', 'institute', 'department']
         
