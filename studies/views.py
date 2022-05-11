@@ -7,12 +7,13 @@ from rest_framework import generics
 
 from django_filters.rest_framework import DjangoFilterBackend
 
-day_pass = datetime.datetime.now()-datetime.timedelta(days=7)
-day_now = datetime.datetime.now()
+
 
 class StudyList(generics.ListAPIView):
-    print(day_pass, day_now)
-    queryset = Study.objects.all().filter(created_at__range=[f'{day_pass}', f'{day_now}'])
+    day_7days = datetime.datetime.now()-datetime.timedelta(days=7)
+    day_now = datetime.datetime.now()
+    
+    queryset = Study.objects.all().filter(updated_at__range=[f'{day_7days}', f'{day_now}'])
     serializer_class = StudySerializers
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['number', 'title']
