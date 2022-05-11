@@ -57,11 +57,18 @@ PROJECT_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'drf_yasg',
-
     'django_crontab',
+    'django_filters'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 1,
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
