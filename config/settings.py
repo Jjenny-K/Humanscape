@@ -148,5 +148,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRONJOBS = [
-    ('* * * * *', 'studies.schedules.hello_every_minute', '>> ./log.txt'),
+    ('* * * * *', 'studies.schedules.hello_every_minute', '>> /studies/crontab.log'),
 ]
