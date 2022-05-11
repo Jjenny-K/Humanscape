@@ -2,7 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,django,pycharm,windows
 # And additional points
 
-# Django settings.py SECRET_KEY file
+# Django base.py SECRET_KEY file
 secrets.json
 
 # Django venv
