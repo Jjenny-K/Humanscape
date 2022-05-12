@@ -2,7 +2,7 @@ import json
 import os
 import sys
 from urllib.request import Request, urlopen
-
+import datetime
 import django
 
 sys.path.append((os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -33,10 +33,11 @@ def get_institute(data):
 
 def insert_disease_control_prevention_agency():
     datum = get_datum()
+    update_cnt = 0
     for data in datum:
         institute = get_institute(data)
 
-        Study.objects.get_or_create(
+        study, _result= Study.objects.get_or_create(
             title=data['과제명'],
             number=data['과제번호'],
             period=data['연구기간'],
@@ -46,3 +47,11 @@ def insert_disease_control_prevention_agency():
             scope='MULTI' if data['연구범위'] == '국내다기관' else 'SINGLE',
             category='OBSERVATION' if data['연구종류'] == '관찰연구' else ('INTERVENTION' if data['연구종류'] == '중재연구' else 'ETC')
         )
+        if _result == True:
+            update_cnt += 1
+
+
+    now = datetime.datetime.now()
+    now_date_time = now.strftime('%Y-%m-%d %H:%M:%S')
+    study_cnt = Study.objects.all().count()
+    print(f'{now_date_time} 임상연구 총계 : {study_cnt}, 추가된 연구수: {update_cnt}')
