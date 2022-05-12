@@ -16,8 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from studies.views import testView
+from django.conf import settings
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('studies/v1/', testView.as_view()),
 ]
+
+from django.conf.urls.static import static
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
+
