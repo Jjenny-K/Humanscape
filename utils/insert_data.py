@@ -13,23 +13,26 @@ from studies.models import Institute, Study
 from config.settings import env
 
 
-def get_disease_control_prevention_agency():
+def get_datum():
     service_key = env('api_secret_key')
     req = Request(
         f'https://api.odcloud.kr/api/3074271/v1/uddi:cfc19dda-6f75-4c57-86a8-bb9c8b103887?page=1&perPage=150&serviceKey={service_key}')
     body = urlopen(req, timeout=60).read()
     body = json.loads(body)
-    datum = body['data']
-    return datum
+    _datum = body['data']
+    return _datum
 
 
 def get_institute(data):
-    institute, _ = Institute.objects.get_or_create(name=data['연구책임기관'], department=data['진료과'])
-    return institute
+    _institute, _ = Institute.objects.get_or_create(
+        name=data['연구책임기관'],
+        department=data['진료과']
+    )
+    return _institute
 
 
-if __name__ == '__main__':
-    datum = get_disease_control_prevention_agency()
+def insert_disease_control_prevention_agency():
+    datum = get_datum()
     for data in datum:
         institute = get_institute(data)
 
