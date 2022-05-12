@@ -19,8 +19,7 @@ def get_disease_control_prevention_agency():
         f'https://api.odcloud.kr/api/3074271/v1/uddi:cfc19dda-6f75-4c57-86a8-bb9c8b103887?page=1&perPage=150&serviceKey={service_key}')
     body = urlopen(req, timeout=60).read()
     body = json.loads(body)
-    data = body['data']
-    datum = data
+    datum = body['data']
     return datum
 
 
