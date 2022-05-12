@@ -3,11 +3,18 @@ import pytest
 from studies.tests.factories import StudyFactory, InstituteFactory
 from pytest_factoryboy import register
 
+from django.core.management import call_command
 from rest_framework.test import APIClient
 
 
 register(StudyFactory)
 register(InstituteFactory)
+
+
+@pytest.fixture(scope='session')
+def django_db_setup(django_db_setup, django_db_blocker):
+    with django_db_blocker.unblock():
+        call_command('loaddata', 'testdata.json')
 
 
 @pytest.fixture()
