@@ -31,6 +31,5 @@ def test_study(study):
 
 
 @pytest.mark.parametrize('study__number', ['C000123'])
-@pytest.mark.parametrize('study__title', [''])
 def test_study_number(study):
     assert study.number == 'C000123'

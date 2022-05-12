@@ -1,6 +1,6 @@
 import pytest
 
-from studies.tests.tests import StudyFactory, InstituteFactory
+from studies.tests.factories import StudyFactory, InstituteFactory
 from pytest_factoryboy import register
 
 from rest_framework.test import APIClient
