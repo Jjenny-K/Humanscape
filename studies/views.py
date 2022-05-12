@@ -3,10 +3,7 @@ from studies.models import Study
 
 from studies.serializer import StudySerializers
 
-from rest_framework import generics
-
-from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework import generics, filters
 
 
 class StudyList(generics.ListAPIView):
@@ -15,10 +12,10 @@ class StudyList(generics.ListAPIView):
     
     queryset = Study.objects.all().filter(updated_at__range=[f'{day_7days}', f'{day_now}'])
     serializer_class = StudySerializers
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['number', 'title']
 
-    
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['number', 'title']
+
 
 class StudyRetrieve(generics.RetrieveAPIView):
     queryset = Study.objects.all()
