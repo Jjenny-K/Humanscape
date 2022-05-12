@@ -54,4 +54,4 @@ def insert_disease_control_prevention_agency():
     now = datetime.datetime.now()
     now_date_time = now.strftime('%Y-%m-%d %H:%M:%S')
     study_cnt = Study.objects.all().count()
-    print(f'{now_date_time} 임상연구 총계 : {study_cnt}, 추가된 연구수: {update_cnt}')
+    return now_date_time, study_cnt, update_cnt
