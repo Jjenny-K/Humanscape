@@ -1,6 +1,7 @@
+
 from django.db import models
 
-from utils.timestamp import TimestampZone
+from studies.utils.timestamp import TimestampZone
 
 
 class Study(TimestampZone):

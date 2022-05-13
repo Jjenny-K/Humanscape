@@ -4,7 +4,7 @@ import sys
 import django
 
 sys.path.append((os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'config.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'config.settings.deploy')
 django.setup()
 
 from config.settings.base import env
@@ -42,8 +42,9 @@ def crontab_monday():
             'stage': data['임상시험단계(연구모형)'],
             'total_target': int(total_target)
         }
-
-        study = Study.objects.filter(number=study_info['number']).values( 'period', 'stage', 'total_target')[0]
+        print('sdasd')
+        study = Study.objects.filter(number=study_info['number']).values( 'period', 'stage', 'total_target').first()
+        print(study)
 
         if study == None:
             Study.objects.create(**study_info)

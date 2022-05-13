@@ -41,10 +41,11 @@ class RequestHandler:
             작성자 : 강정희
             파라미터 중 'weekly' 값 확인
         """
-        weekly = request.GET.get('weekly', None).upper()
+        if request.GET.get('weekly'):
+            weekly = request.GET.get('weekly', None).upper()
 
-        if weekly == 'TRUE':
-            return weekly
+            if weekly == 'TRUE':
+                return weekly
 
     def offset_limit_paginator(self, request):
         """
