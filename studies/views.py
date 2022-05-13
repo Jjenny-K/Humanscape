@@ -4,11 +4,12 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, filters, views
 from rest_framework.response import Response
+from drf_yasg.utils import swagger_auto_schema
 
 from studies.models import Study
 from studies.serializer import StudySerializers
 
-from studies.utils import RequestHandler
+from studies.utils import RequestHandler, set_studies_swagger_params
 
 
 """
@@ -24,6 +25,13 @@ class StudyList(views.APIView, RequestHandler):
     """
     serializer_class = StudySerializers
 
+    @swagger_auto_schema(
+        operation_description='GET /api/v1/studies',
+        operation_summary='Return Fields: (title, number, period, scope, '
+                          'category, stage, total_target, institute, department)',
+        manual_parameters=set_studies_swagger_params(),
+        responses={'200': StudySerializers(many=True)}
+    )
     def get(self, request):
         day_7days = datetime.datetime.now() - datetime.timedelta(days=7)
         day_now = datetime.datetime.now()
@@ -56,6 +64,12 @@ class StudyRetrieve(views.APIView):
     def get_object(self, pk):
         return get_object_or_404(Study, pk=pk)
 
+    @swagger_auto_schema(
+        operation_description='GET /api/v1/studies/:pk',
+        operation_summary='Return Fields: (title, number, period, scope, '
+                          'category, stage, total_target, institute, department)',
+        responses={'200': StudySerializers}
+    )
     def get(self, request, pk):
         # pk 값과 맞는 object 검색 후 없다면 404 error 반환
         study = self.get_object(pk)

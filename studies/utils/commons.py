@@ -1,5 +1,7 @@
 from django.db.models import Q
 
+from drf_yasg import openapi
+
 
 class RequestHandler:
     def _request_param(self, request):
@@ -39,9 +41,10 @@ class RequestHandler:
             작성자 : 강정희
             파라미터 중 'weekly' 값 확인
         """
-        weekly = request.GET.get('weekly', None)
+        weekly = request.GET.get('weekly', None).upper()
 
-        return weekly
+        if weekly == 'TRUE':
+            return weekly
 
     def offset_limit_paginator(self, request):
         """
@@ -62,3 +65,22 @@ class RequestHandler:
         page_size = int(request.GET.get('page_size', 10))
 
         return page, page_size
+
+
+def set_studies_swagger_params():
+    """
+        작성자 : 강정희
+        api/v1/studies manual_parameters setting
+    """
+    param_1 = openapi.Parameter('weekly', openapi.IN_QUERY,
+                                description='true or none(optional)', type=openapi.TYPE_STRING)
+    param_2 = openapi.Parameter('title', openapi.IN_QUERY,
+                                description='part or the whole title(optional)', type=openapi.TYPE_STRING)
+    param_3 = openapi.Parameter('number', openapi.IN_QUERY,
+                                description='part or the whole number(optional)', type=openapi.TYPE_STRING)
+    param_4 = openapi.Parameter('institute', openapi.IN_QUERY,
+                                description='part or the whole institute name(optional)', type=openapi.TYPE_INTEGER)
+
+    studies_parameters = [param_1, param_2, param_3, param_4]
+
+    return studies_parameters
