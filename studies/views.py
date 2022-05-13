@@ -42,7 +42,8 @@ from studies.utils import RequestHandler
     1. StudyList
         임의의 필터링을 거친 임상시험과제 리스트 조회 API
         파라미터 weekly=True 값이 반환되었을 때, 최근 일주일간 업데이트가 이루어진 데이터 조회
-        파라미터 offset, limit 값으로(default = 0, 5) offset-limit pagination 구현 
+        파라미터 offset, limit 값으로(default = 0, 10) offset-limit pagination 구현
+        + 파라미터 page, page_size 값이 존재할 때, page-page_size pagination 구현 
     2. StudyRetrieve
         지정된 uuid(number)의 임상시험과제 상세 조회 API
 """
@@ -58,7 +59,11 @@ class StudyList(views.APIView, RequestHandler):
         if self.has_weekly(request):
             query &= Q(updated_at__range=[f'{day_7days}', f'{day_now}'])
 
-        offset, limit = self.offset_limit_paginator(request)
+        # 파라미터 중 page, page_size가 있을 때, pagination 추가
+        if request.GET.get('page') or request.GET.get('page_size'):
+            offset, limit = self.page_page_size_paginatior(request)
+        else:
+            offset, limit = self.offset_limit_paginator(request)
 
         studies = Study.objects.filter(query)[offset:offset+limit]
         serializer = self.serializer_class(studies, many=True)

@@ -49,6 +49,16 @@ class RequestHandler:
             pagination을 위한 offset, limit 변수화
         """
         offset = int(request.GET.get('offset', 0))
-        limit = int(request.GET.get('limit', 5))
+        limit = int(request.GET.get('limit', 10))
 
         return offset, limit
+
+    def page_page_size_paginatior(self, request):
+        """
+            작성자 : 강정희
+            pagination을 위한 page, page_size 변수화
+        """
+        page = int(request.GET.get('page', 0))
+        page_size = int(request.GET.get('page_size', 10))
+
+        return page, page_size
