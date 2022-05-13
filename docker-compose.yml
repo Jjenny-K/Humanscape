@@ -13,11 +13,25 @@ services:
   build:
     context: .
     dockerfile: Dockerfile
+  env_file:
+   - ./.env
   volumes:
-   - static-data:/Bearrobotics/static
+   - static-data:/Humanscape/static
+  depends_on:
+   - db
+  networks:
+   subnet:
  db:
   image: postgres
   ports:
    - "5432:5432"
+  env_file:
+   - ./.env
+  networks:
+   - subnet
+
 volumes:
  static-data:
+networks:
+ subnet:
+  driver: bridge
