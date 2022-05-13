@@ -2,10 +2,10 @@ import datetime
 import os
 
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
 
-from config.settings import BASE_DIR
-from studies.models import Study
+from config.settings.base import BASE_DIR
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -20,6 +20,7 @@ from studies.utils import RequestHandler, set_studies_swagger_params
 from rest_framework import generics, status
 
 
+
 """
     작성자 : 강정희
     Django REST Framework APIView, ORM을 사용한 list, retrieve view
@@ -32,6 +33,17 @@ class StudyList(views.APIView, RequestHandler):
         (파라미터 page, page_size 값이 존재할 때, page-page_size pagination 구현)
     """
     serializer_class = StudySerializers
+
+
+class StudyList(generics.ListAPIView):
+    day_7days = datetime.datetime.now() - datetime.timedelta(days=7)
+    day_now = datetime.datetime.now()
+
+    queryset = Study.objects.all().filter(updated_at__range=[f'{day_7days}', f'{day_now}'])
+    serializer_class = StudySerializers
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['number', 'title']
+
 
     @swagger_auto_schema(
         operation_description='GET /api/v1/studies',
