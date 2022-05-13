@@ -6,6 +6,10 @@ from pytest_factoryboy import register
 from django.core.management import call_command
 from rest_framework.test import APIClient
 
+"""
+    작성자 : 강정희
+"""
+
 
 register(StudyFactory)
 register(InstituteFactory)

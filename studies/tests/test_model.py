@@ -3,6 +3,10 @@ import pytest
 from studies.models import Study, Institute
 from studies.tests.factories import StudyFactory, InstituteFactory
 
+"""
+    작성자 : 강정희
+"""
+
 
 pytestmark = pytest.mark.django_db
 
