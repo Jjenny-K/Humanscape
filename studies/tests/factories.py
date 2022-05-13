@@ -4,6 +4,10 @@ from faker import Faker
 
 from studies.models import Study, Institute
 
+"""
+    작성자 : 강정희
+"""
+
 
 fake = Faker('ko_KR')
 

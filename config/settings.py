@@ -64,9 +64,10 @@ THIRD_PARTY_APPS = [
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
 
+"""Django REST Framework 내부 클래스을 이용한 page-page_size pagination"""
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 1,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
 }
 
 
@@ -156,4 +157,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRONJOBS = [
     ('* * * * 1', 'studies.schedules.crontab_monday', '>> /home/ubuntu/Humanscape/crontab.txt'),
-]
+
+APPEND_SLASH = False
