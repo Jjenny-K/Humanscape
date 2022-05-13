@@ -1,16 +1,8 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-
-class testView(APIView):
-    def get(self, request):
-        return Response("Deploy Test", status=200)
-
 import datetime
 from studies.models import Study
 from studies.serializer import StudySerializers
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
-
 
 
 class StudyList(generics.ListAPIView):
@@ -26,4 +18,3 @@ class StudyList(generics.ListAPIView):
 class StudyRetrieve(generics.RetrieveAPIView):
     queryset = Study.objects.all()
     serializer_class = StudySerializers
-
