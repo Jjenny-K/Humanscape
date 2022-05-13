@@ -37,14 +37,20 @@ def crontab_monday():
             'category': data['연구종류'],
         }
 
-        study = Study.objects.filter(number=study_info['number']).first()
+        study_info_check_list = {
+            'period': data['연구기간'],
+            'stage': data['임상시험단계(연구모형)'],
+            'total_target': int(total_target)
+        }
+
+        study = Study.objects.filter(number=study_info['number']).values( 'period', 'stage', 'total_target')[0]
+        print(study)
 
         if study == None:
             Study.objects.create(**study_info)
             create_cnt += 1
         else:
-            if (study.period == study_info['period']) and (study.stage == study_info['stage']) and (
-                    study.total_target == study_info['total_target']):
+            if study == study_info_check_list:
                 continue
             else:
                 study.period = study_info['period']
