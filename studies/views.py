@@ -114,6 +114,12 @@ class StudyRetrieve(views.APIView):
 #     queryset = Study.objects.all()
 #     serializer_class = StudySerializers
 
+
+
+"""
+    작성자 : 이형준
+    txt파일을 GET요청에 맞게 클라이언트로 반환하는 함수입니다. 
+"""
 @api_view(["GET"])
 def schedules_logs_list_view(request):
     logs = os.path.join(BASE_DIR, 'log.txt')
