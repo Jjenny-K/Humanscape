@@ -57,8 +57,11 @@ Client에게 의료 연구과제를 모아, 필터링과 서치 서비스를 제
 ### ERD
 <img src="./source/erd.png" alt="erd">
 
+### 배포주소
+[Go To](http:13.125.126.117/api/v1/studies)
+
 ### API 명세
-[See Document](http:localhost/swagger)
+[See Document](http:13.125.126.117/swagger)
 
 <img src="./source/swagger.png" alt="swagger">
 
@@ -66,8 +69,18 @@ Client에게 의료 연구과제를 모아, 필터링과 서치 서비스를 제
 ### Step to run
 [GET API](https://www.data.go.kr/data/3074271/fileData.do#/API%20%EB%AA%A9%EB%A1%9D/GETuddi%3Acfc19dda-6f75-4c57-86a8-bb9c8b103887)
 url을 통해 api_key를 받아주세요
+#### batch 관련
+~~~
+django-cronjob의 실행에 필요한 fcntl은 유닉스 운영체제에서만
+쓰이기 때문에 윈도우 환경에서는 실행이 불가능 합니다.
+따라서 로컬에서 진행한다면 cronjob을 통한 api데이터 받기가 아닌
+직접 실행을 해야합니다.
 
+배포 서버 즉, 유닉스(리눅스)기반 운영체제에서의 빌드시, 주기적으로
+실행되는 스케줄에 따라 api데이터 받기가 가능합니다.
+~~~
 
+#### 로컬 서버 실행 방법(cronjob 실행x 수동으로 api data 받기)
 ##### 1. 리포지터리에서 clone을 합니다
 ~~~
 git clone https://github.com/wanted-team-e/Humanscape.git
@@ -83,12 +96,16 @@ git clone https://github.com/wanted-team-e/Humanscape.git
 ##### 2-2. .env 파일을 루트에 생성 후 Postgresql과 연동을 위한 정보를 담습니다
 ~~~
 SECRET_KEY=''
-api_secret_key_1='api_key'
+api_secret_key_1='공공 데이터 포털api_key'
 
 DB_NAME='DB이름'
 DB_USER='유저이름'
 DB_PASS='비밀번호'
 DB_HOST='호스트주소'
+uddi='공공데이터포털 api주소'
+POSTGRES_NAME='컨테이너용 변수'
+POSTGRES_USER='컨테이너용 변수'
+POSTGRES_PASS='컨테이너용 변수'
 ~~~
 
 ##### 3. 가상환경을 설정한 후 requirement.txt안의 라이브러리를 다운로드 받습니다
@@ -119,7 +136,47 @@ studies.schedules.py 실행
 python manage.py runserver --settings=config.settings.develop
 ~~~
 
+#### 배포 서버 실행 방법(cronjob 실행)
+##### 1. 레포지토리 내려받기
+~~~
+git clone https://github.com/wanted-team-e/Humanscape.git
+~~~
 
+##### 2. 가상환경 설치 및 적용
+~~~
+sudo apt install virtualenv --> virtualenv 설치
+virtualenv -p python3 venv --> 가상환경 구성
+source venv/bin/activate --> 가상환경 실행
+pip install -r requirements.txt --> 필요한 라이브러리 설치
+~~~
+
+##### 3. 디레터리 최상단 .env 파일 생성
+~~~
+SECRET_KEY=''
+api_secret_key_1='공공 데이터 포털api_key'
+
+DB_NAME='DB이름'
+DB_USER='유저이름'
+DB_PASS='비밀번호'
+DB_HOST='호스트주소'
+uddi='공공데이터포털 api주소'
+POSTGRES_NAME='컨테이너용 변수'
+POSTGRES_USER='컨테이너용 변수'
+POSTGRES_PASS='컨테이너용 변수'
+~~~
+##### 4. nginx/nginx.conf 파일 server_name 변경
+~~~
+nginx.conf 파일
+server_name 본인의 배포용 ip로 변경
+~~~
+##### 5. docker compose up
+~~~
+sudo docker-compose up -d --build 
+배치 파일의 실행의 경우 Dockerfile에 설정이 되어 있기때문에
+자동실행됨 -> 혹시 변경하고 싶다면?
+sudo docker exec -it {container_id} /bin/bash를 통해 접속
+config/settings/base.py의 cronjob 수정
+~~~
 ## Trouble Shooting
 ##### postgresql서버와 pgadmin 연동 문제
 * pgAdmin4: 500 Internal Server Error
@@ -127,6 +184,9 @@ python manage.py runserver --settings=config.settings.develop
     2. Postgresql Install (pgadmin함께 설치 체크 해제)
     3. Pgadmin Install
 
+* postgresql의 컨테이너 통신
+    1. 문제: 컨테이너간의 통신이 되지 않아 db연결이 안되는문제가 발생
+    2. 해결: web컨테이너의 depends_on을 활용하여 해결함
 
 ## Author
 ### 강정희
@@ -152,10 +212,28 @@ python manage.py runserver --settings=config.settings.develop
     - APIView와 Viewset의 구현 방식의 차이, test code 작성에 대해 조금 더 알아보는 시간을 가지면 좋을 것 같고, 배포 과정에 대해서도 상세하게 익힐 시간이 필요할 것 같습니다.
 
 ### 이형준
+- 모델링 및 요구사항 분석
+  - 공공 api의 데이터를 csv화 하여 모델링 구체화
+  - 초기 요구 사항 해석
+- 배치 파일 구현
+  - django-crontab을 활용하여 구현
+  - update와 create를 고려한 구현
+  - 추후 api의 확장이 용이하도록 공공데이터 주소부분 class로 구현
+  - crontab의 경우, print문을 로그로 만들어주므로 중요로그 print로 구현
+  - api/v1/schedules/logs 업데이트 내용 확인가능하도록 함수형뷰로 구현
+- 배포
+  - gunicorn nginx ec2 postgresql을 활용한 배포
+  - docker를 활용한 배포
+- 어려웠던 점 및 보완할 점
+    - 배치파일을 불필요한 코드를 줄이려 노력하였으나 생각보다 어려움을 겪었습니다.
+    - docker를 활용함에 있어 매번 같은 방식으로 진행해서
+새로운 어려움을 만나 해결하는데 너무 많은 리소스가 소비되었습니다.
+    - 그저 해결하기위해 오랜시간 바라만 보고 있는게 아닌 과제를 진행하는
+코어시간에 집중을 하는 습관을 들여서 과제와 일상생활 간의 밸런스를 맞춰야 겠다는 생각이 들었습니다.
 
 ### 서재환
 - 배포
-    - 배포를 위해 [gunicorn + Nginx + EC2]를 이용하여 진행하였습니다. 처음 배포를 하는 부분이라서 많은 어려움을 겪었습니다. 웹서버 + WAS + Nginx + EC2에 대한 개념 없이 설정에 초점을 맞추어 작업을 진 행하였기 때문에 큰그림을 보지 못하였고 작업을 진행하는데 있어 마주하는 크고 작은 오류에 대해서 도 오류를 해결하기에 급급했습니다. 처음해보는 작업이라는 점으로 인해 두서없이 진행한 부분이 큰 것 같습니다. 다음 과제 때 배포를 맡진 않겠지만 다음에 있을 작업을 할 때에는 크게 보고 개념을 잘 챙기면서 과제를 진행해야 할 것 같습니다.
+    - 배포를 위해 [gunicorn + Nginx + postgresql + EC2]를 이용하여 진행하였습니다. 처음 배포를 하는 부분이라서 많은 어려움을 겪었습니다. 웹서버 + WAS + Nginx + EC2에 대한 개념 없이 설정에 초점을 맞추어 작업을 진 행하였기 때문에 큰그림을 보지 못하였고 작업을 진행하는데 있어 마주하는 크고 작은 오류에 대해서 도 오류를 해결하기에 급급했습니다. 처음해보는 작업이라는 점으로 인해 두서없이 진행한 부분이 큰 것 같습니다. 다음 과제 때 배포를 맡진 않겠지만 다음에 있을 작업을 할 때에는 크게 보고 개념을 잘 챙기면서 과제를 진행해야 할 것 같습니다.
 
 ### 김채욱
 * 프로젝트 초기 세팅
