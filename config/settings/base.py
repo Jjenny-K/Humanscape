@@ -156,3 +156,8 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:8000',
     'http://localhost:8080',
 ]
+
+CRONJOBS = [
+    ('* * * * 1', 'studies.schedules.crontab_monday', '>> /home/ubuntu/Humanscape/crontab.txt'),
+]
+
