@@ -44,7 +44,6 @@ def crontab_monday():
         }
 
         study = Study.objects.filter(number=study_info['number']).values( 'period', 'stage', 'total_target')[0]
-        print(study)
 
         if study == None:
             Study.objects.create(**study_info)
