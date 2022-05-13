@@ -1,0 +1,23 @@
+version: '3'
+services:
+ nginx:
+  image: nginx:latest
+  ports:
+   - "80:80"
+  volumes:
+   - ./nginx:/etc/nginx/conf.d
+   - static-data:/static
+  depends_on:
+   - web
+ web:
+  build:
+    context: .
+    dockerfile: Dockerfile
+  volumes:
+   - static-data:/Bearrobotics/static
+ db:
+  image: postgres
+  ports:
+   - "5432:5432"
+volumes:
+ static-data:
