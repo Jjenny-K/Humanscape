@@ -1,4 +1,11 @@
 import datetime
+import os
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from config.settings import BASE_DIR
+from studies.models import Study
 
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -10,6 +17,7 @@ from studies.models import Study
 from studies.serializer import StudySerializers
 
 from studies.utils import RequestHandler, set_studies_swagger_params
+from rest_framework import generics, status
 
 
 """
@@ -105,3 +113,14 @@ class StudyRetrieve(views.APIView):
 #     """
 #     queryset = Study.objects.all()
 #     serializer_class = StudySerializers
+
+@api_view(["GET"])
+def schedules_logs_list_view(request):
+    logs = os.path.join(BASE_DIR, 'log.txt')
+    f = open(logs, 'rt', encoding='UTF8')
+    lines = f.readlines()
+    f.close()
+    res = {
+        'logs':lines
+    }
+    return Response(res, status=status.HTTP_200_OK)
