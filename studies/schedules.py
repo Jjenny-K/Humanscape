@@ -7,7 +7,7 @@ sys.path.append((os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'config.settings')
 django.setup()
 
-from config.settings import env
+from config.settings.base import env
 from studies.controll_api_settings import ControlAPISetting
 from studies.models import Institute, Study
 

@@ -4,12 +4,11 @@ import os
 from rest_framework.decorators import api_view
 
 from config.settings.base import BASE_DIR
-from django_filters.rest_framework import DjangoFilterBackend
 
 
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from rest_framework import generics, filters, views
+from rest_framework import views
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 
@@ -17,7 +16,7 @@ from studies.models import Study
 from studies.serializer import StudySerializers
 
 from studies.utils import RequestHandler, set_studies_swagger_params
-from rest_framework import generics, status
+from rest_framework import status
 
 
 
@@ -33,17 +32,6 @@ class StudyList(views.APIView, RequestHandler):
         (파라미터 page, page_size 값이 존재할 때, page-page_size pagination 구현)
     """
     serializer_class = StudySerializers
-
-
-class StudyList(generics.ListAPIView):
-    day_7days = datetime.datetime.now() - datetime.timedelta(days=7)
-    day_now = datetime.datetime.now()
-
-    queryset = Study.objects.all().filter(updated_at__range=[f'{day_7days}', f'{day_now}'])
-    serializer_class = StudySerializers
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['number', 'title']
-
 
     @swagger_auto_schema(
         operation_description='GET /api/v1/studies',
