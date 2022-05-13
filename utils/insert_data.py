@@ -55,5 +55,3 @@ def insert_disease_control_prevention_agency():
     now_date_time = now.strftime('%Y-%m-%d %H:%M:%S')
     study_cnt = Study.objects.all().count()
     return now_date_time, study_cnt, update_cnt
-
-insert_disease_control_prevention_agency()

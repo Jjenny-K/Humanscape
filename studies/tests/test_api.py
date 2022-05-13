@@ -4,6 +4,10 @@ from django.urls import reverse
 
 from studies.models import Study, Institute
 
+"""
+    작성자 : 강정희
+"""
+
 
 pytestmark = pytest.mark.django_db
 
