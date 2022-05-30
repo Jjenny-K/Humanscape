@@ -1,7 +1,22 @@
-<img src="./source/logo.png" alt="logo">
+<div align="center">
+	<img src="./source/logo.png" alt="logo">
+</div>
 
-# Team_E_Business Tasks _ Humanscape
+## 목차
+
+- [프로젝트 개요](#Humanscape_기업과제)
+- [구현 요구사항](#구현-요구사항)
+- [기술 스택](#기술-스택)
+- [ERD](#ERD)
+- [API 명세서](#API-명세)
+- [프로그램 설치 및 실행 방법](#Step-to-run)
+- [Author](#Author)
+
+
+# Humanscape_기업과제
 원티드 프리온보딩 코스 _ 세번째 기업과제 _ 휴먼스케이프
+
+### 배포주소 [Go To](http:13.125.126.117/api/v1/studies)
 
 ### 팀 노션 [GoTo](https://rumbling-olive-af4.notion.site/Humanscape-6dd75da669644994bf73d34941e13735)
 - 요구사항 분석, 정보 공유 및 프로젝트 진행을 위해 사용
@@ -57,9 +72,6 @@ Client에게 의료 연구과제를 모아, 필터링과 서치 서비스를 제
 ### ERD
 <img src="./source/erd.png" alt="erd">
 
-### 배포주소
-[Go To](http:13.125.126.117/api/v1/studies)
-
 ### API 명세
 [See Document](http:13.125.126.117/swagger)
 
@@ -83,7 +95,7 @@ django-cronjob의 실행에 필요한 fcntl은 유닉스 운영체제에서만
 #### 로컬 서버 실행 방법(cronjob 실행x 수동으로 api data 받기)
 ##### 1. 리포지터리에서 clone을 합니다
 ~~~
-git clone https://github.com/wanted-team-e/Humanscape.git
+$ git clone https://github.com/wanted-team-e/Humanscape.git
 ~~~
 
 ##### 2-1. Pgadmin4에서 application과 연동할 DB를 생성합니다
@@ -123,31 +135,31 @@ Mac:
 
 ##### 4. Model migrations을 진행합니다
 ~~~
-python manage.py migrate
+$ python manage.py migrate
 ~~~
 
-##### 5. Cron Job 실행하였습니다
+##### 5. Cron Job을 실행합니다
 ~~~
 studies.schedules.py 실행
 ~~~
 
-##### 6. Django 서버 실행하였습니다
+##### 6. Django 서버 실행합니다
 ~~~
-python manage.py runserver --settings=config.settings.develop
+$ python manage.py runserver --settings=config.settings.develop
 ~~~
 
 #### 배포 서버 실행 방법(cronjob 실행)
 ##### 1. 레포지토리 내려받기
 ~~~
-git clone https://github.com/wanted-team-e/Humanscape.git
+$ git clone https://github.com/wanted-team-e/Humanscape.git
 ~~~
 
 ##### 2. 가상환경 설치 및 적용
 ~~~
-sudo apt install virtualenv --> virtualenv 설치
-virtualenv -p python3 venv --> 가상환경 구성
-source venv/bin/activate --> 가상환경 실행
-pip install -r requirements.txt --> 필요한 라이브러리 설치
+$ sudo apt install virtualenv --> virtualenv 설치
+$ virtualenv -p python3 venv --> 가상환경 구성
+$ source venv/bin/activate --> 가상환경 실행
+$ pip install -r requirements.txt --> 필요한 라이브러리 설치
 ~~~
 
 ##### 3. 디레터리 최상단 .env 파일 생성
@@ -171,10 +183,10 @@ server_name 본인의 배포용 ip로 변경
 ~~~
 ##### 5. docker compose up
 ~~~
-sudo docker-compose up -d --build 
-배치 파일의 실행의 경우 Dockerfile에 설정이 되어 있기때문에
-자동실행됨 -> 혹시 변경하고 싶다면?
-sudo docker exec -it {container_id} /bin/bash를 통해 접속
+$ sudo docker-compose up -d --build 
+배치 파일의 실행의 경우 Dockerfile에 설정이 되어 있기 때문에 자동 실행됨 
+-> 혹시 변경하고 싶다면?
+$ sudo docker exec -it {container_id} /bin/bash -> 해당 컨테이너 접속
 config/settings/base.py의 cronjob 수정
 ~~~
 ## Trouble Shooting
@@ -204,11 +216,9 @@ config/settings/base.py의 cronjob 수정
         - 지정된 open API의 내용이 아니라 Factoryboy, Faker를 이용해 임의의 테스트용 모델을 생성해서 Model test를 구현했습니다.
 - Swagger 적용
     - 구현했던 List/Retrieve API의 request, response 상세 내용을 추가해 API document를 작성했습니다.
-
 - 어려웠던 점 및 보완할 점
     - API 구현과 Swagger 작성에서, 이전에 API 구현에 적용했던 방식인 ModelViewSet에 비해 함수를 선언해서 상세히 구현해야 했기 때문에 내부 로직을 어느 정도 이해하는데 추가적인 시간이 필요했습니다.
     - 처음 test code를 구현해보았기 때문에 필요한 라이브러리를 설치하는 것부터 어려움이 있었고, 각 라이브러리에 대한 이해도가 낮은 상태로 구현을 시작해서 시행착오가 많았던 것 같습니다.
-
     - APIView와 Viewset의 구현 방식의 차이, test code 작성에 대해 조금 더 알아보는 시간을 가지면 좋을 것 같고, 배포 과정에 대해서도 상세하게 익힐 시간이 필요할 것 같습니다.
 
 ### 이형준
