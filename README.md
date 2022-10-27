@@ -4,19 +4,19 @@
 
 ## 목차
 
-- [프로젝트 개요](#Humanscape_기업과제)
+- [프로젝트 개요](#humanscape_기업과제)
 - [구현 요구사항](#구현-요구사항)
 - [기술 스택](#기술-스택)
-- [ERD](#ERD)
-- [API 명세서](#API-명세)
-- [프로그램 설치 및 실행 방법](#Step-to-run)
-- [Author](#Author)
+- [ERD](#erd)
+- [API 명세서](#api-명세)
+- [프로그램 설치 및 실행 방법](#step-to-run)
+- [Author](#author)
 
 
 # Humanscape_기업과제
 원티드 프리온보딩 코스 _ 세번째 기업과제 _ 휴먼스케이프
 
-### 배포주소 [Go To](http:13.125.126.117/api/v1/studies)
+### 배포주소 --> 현재 비용 문제로 인해 내려둔 상태입니다.
 
 ### 팀 노션 [GoTo](https://rumbling-olive-af4.notion.site/Humanscape-6dd75da669644994bf73d34941e13735)
 - 요구사항 분석, 정보 공유 및 프로젝트 진행을 위해 사용
@@ -73,7 +73,7 @@ Client에게 의료 연구과제를 모아, 필터링과 서치 서비스를 제
 <img src="./source/erd.png" alt="erd">
 
 ### API 명세
-[See Document](http:13.125.126.117/swagger)
+--> 현재 비용 문제로 인해 내려둔 상태입니다.
 
 <img src="./source/swagger.png" alt="swagger">
 
